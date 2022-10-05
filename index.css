@@ -5,5 +5,18 @@
 }
 
 #bruh{
-    background-color:blue;
+    width:250px;
+    background-color:lightgray;
+}
+
+.Författare{
+    background-color: beige;
+}
+
+.Bok{
+    background-color: aliceblue;
+}
+
+#Test{
+    background-color:aquamarine;
 }
