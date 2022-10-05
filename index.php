@@ -81,6 +81,61 @@
                         else {
                         echo "Error: " . $sql . "<br>" . $conn->error;
                         }
+                if (Isset($_POST['Referensbok'])){
+                    $Referensbok = 1;
+                }
+                else{
+                    $Referensbok = 0;
+                }
+                $sql->execute();
+                $sql->close();
+
+                Header('Location:index.php');
+            }
+        ?>
+        <?php
+            echo "<form method='post' class='Bok'>";
+                echo "<input type='hidden' name='Bok' class='Bok'>";
+                echo "Bok namn: <br><input type='text' name='BokNamn' required='require' class='Bok'><br>";
+                echo "Ljudbok: <br><input type='checkbox' name='Ljudbok' class='Bok'><br>";
+                echo "Referensbok: <br><input type='checkbox' name='ReferensBok' class='Bok'><br>";
+                echo "ISBN: <br><input type='text' name='ISBN' required='require' class='Bok'><br>";
+                echo "<input type='submit' value='Submit' class='Bok'>";
+            echo "</form>";
+        ?>
+
+        <?php
+            echo " <br>";
+            $sql = "SELECT Namn,ISBN FROM bok";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    echo "<br>" . $row['Namn'];
+                    $ISBN = $row['ISBN'];
+                    echo "<form method='post' action='delete.php'>";
+                        echo "<input type='hidden' name='Bok' value='$ISBN'>";
+                        echo "<input type='submit' value='Delete'>";
+                    echo "</form>";
+                }
+            }
+        ?>
+     </div><br> <!-- ----- Bok ----- -->
+
+    <div> <br> ----- Bok + Författare -----
+        <?php
+            if (isset($_POST['BokFor'])){
+                $Bok = $_POST['BokFor'];
+                echo $Bok . "<br>";
+                $values = $_POST['Forf'];
+                foreach ($values as $a){
+                    echo $a . "<br>";
+
+                    $sql = "INSERT INTO bokfor (ISBN, FID) VALUES ('$Bok', '$a')";
+
+                    if ($conn->query($sql) === TRUE) {
+                    } 
+                    else {
+                      echo "Error: " . $sql . "<br>" . $conn->error;
                     }
                     Header('Location:index.php');
                 }
