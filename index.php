@@ -151,7 +151,8 @@
         ?>
 
         <?php
-            echo " <br>";
+            echo "------<br>";
+
             $sql = "SELECT bok.Namn AS BokNamn, forfattare.Namn AS ForNamn FROM bok,forfattare,bokfor WHERE bok.ISBN = bokfor.ISBN AND forfattare.ID = bokfor.FID";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
