@@ -41,6 +41,17 @@
             echo "<input type='submit' value='Submit'>";
         echo "</form>";
     ?>
+
+    <?php
+        echo "-----<br>";
+        $sql = "SELECT Namn FROM bok";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo $row['Namn']."<br>";
+            }
+        }
+    ?>
 </div> ----- Bok -----
 
 <div> <br> ----- Bok + Författare -----
@@ -127,6 +138,23 @@
         } 
 
     ?>
+
+    <?php
+        echo "-----<br>";
+        $sql = "SELECT bok.Namn AS BokNamn, forfattare.Namn AS ForNamn FROM bok,forfattare,bokfor WHERE bok.ISBN = bokfor.ISBN AND forfattare.ID = bokfor.FID";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                if (@$BokNamn == $row['BokNamn']){
+                }
+                else{
+                    echo "<br>". $row['BokNamn']."<br>";
+                }
+                $BokNamn = $row['BokNamn'];
+                echo $row['ForNamn']."<br>";
+            }
+        }
+    ?>
 </div> ----- Bok + Författare -----
 
 
@@ -149,5 +177,16 @@
             echo "<input type='text' name='ForfattarNamn' required='require'><br>";
             echo "<input type='submit' value='Submit'>";
         echo "</form>";
+    ?>
+
+    <?php
+        echo "-----<br>";
+        $sql = "SELECT Namn FROM forfattare";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo $row['Namn']."<br>";
+            }
+        }
     ?>
 </div> ----- Forfattare -----
