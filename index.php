@@ -119,7 +119,7 @@
                 }
             }
         ?>
-     </div><br> <!-- ----- Bok ----- -->
+    </div><br> <!-- ----- Bok ----- -->
 
     <div> <br> ----- Bok + Författare -----
         <?php
@@ -231,6 +231,7 @@
                     $sql = $conn->prepare("INSERT INTO forfattare (Namn) VALUE (?)");
                     $sql->bind_param("s", $Namn);
 
+
                     $Namn = $_POST['ForfattarNamn'];
                     $sql->execute();
                     $sql->close();
@@ -256,6 +257,75 @@
                 }
             ?>
         </div> <!-- ----- Forfattare ----- -->
-    </div>
-  </body>
-</html>
+
+        <div id="Test"> <br> ----- Film -----
+            <?php
+                if (isset($_POST['Film'])) {
+                    $sql = $conn->prepare("INSERT INTO film (Titel,Langd) VALUES (?,?)");
+                    $sql->bind_param("ss", $Titel,$Langd);
+
+                    $Titel = $_POST['FilmTitel'];
+                    $Langd = $_POST['Langd'];
+
+                    $sql->execute();
+                    $sql->close();
+
+                    Header('Location:index.php');
+                }
+            ?>
+            <?php
+                echo "<form method = 'post' class='Film'>";
+                    echo "<input type='hidden' name='Film' class='Film'>";
+                    echo "Film namn: <br><input type='text' name='FilmTitel' required='require' class='Film'><br>";
+                    echo "Längd: <br><input type='time' name='Langd' required='require' class='Film'><br>";
+                    echo "<input type='submit' value='Submit' class='Film'>";
+                echo "</form>";
+            ?>
+
+            <?php
+                echo " <br>";
+                $sql = "SELECT Titel FROM film";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo $row['Titel']."<br>";
+                    }
+                }
+            ?>
+        </div><br> <!-- ----- Film ----- -->
+
+        <div id="bruh"> <br> ----- Regissör -----
+            <?php
+                if (isset($_POST['Regissor'])) {
+                    $sql = $conn->prepare("INSERT INTO regissor (Namn) VALUE (?)");
+                    $sql->bind_param("s", $Namn);
+
+                    $Namn = $_POST['RegissorNamn'];
+                    $sql->execute();
+                    $sql->close();
+
+                    Header('Location:index.php');
+                }
+            ?>
+            <?php
+                echo "<form method = 'post' class='Regissör'>";
+                    echo "<input type='hidden' name='Regissor' class='Regissör'>";
+                    echo "<input type='text' name='RegissorNamn' required='require' class='Regissör'><br>";
+                    echo "<input type='submit' value='Submit' class='Regissör'>";
+                echo "</form>";
+            ?>
+            <?php
+                echo "<br>";
+                $sql = "SELECT Namn FROM regissor";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo $row['Namn']."<br>";
+                    }
+                }
+            ?>
+        </div> <!-- ----- Regissör----- -->
+
+        </div>
+      </body>
+    </html>
