@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 03 okt 2022 kl 15:15
+-- Tid vid skapande: 05 okt 2022 kl 11:18
 -- Serverversion: 10.4.24-MariaDB
 -- PHP-version: 8.1.6
 
@@ -46,6 +46,18 @@ CREATE TABLE `bok` (
   `ReferensBok` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
+--
+-- Dumpning av Data i tabell `bok`
+--
+
+INSERT INTO `bok` (`ISBN`, `Namn`, `LjudBok`, `ReferensBok`) VALUES
+('9780593058015', 'Blind faith', 0, 0),
+('9781584502333', 'Game programming genus 3', 0, 0),
+('9789144014630', 'C++ direkt', 0, 0),
+('9789144022284', 'Java direkt', 0, 0),
+('9789147017263', 'Teknikutveckling och företagande', 0, 0),
+('9789163609732', 'Webbprogrammering med PHP', 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -57,6 +69,20 @@ CREATE TABLE `bokfor` (
   `ISBN` varchar(255) COLLATE utf8_swedish_ci NOT NULL,
   `FID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
+-- Dumpning av Data i tabell `bokfor`
+--
+
+INSERT INTO `bokfor` (`ID`, `ISBN`, `FID`) VALUES
+(1, '9789163609732', 1),
+(2, '9789163609732', 2),
+(7, '9789144014630', 3),
+(8, '9789144022284', 3),
+(10, '9780593058015', 4),
+(11, '9781584502333', 7),
+(12, '9789147017263', 5),
+(13, '9789147017263', 6);
 
 -- --------------------------------------------------------
 
@@ -104,6 +130,19 @@ CREATE TABLE `forfattare` (
   `ID` int(11) NOT NULL,
   `Namn` varchar(100) COLLATE utf8_swedish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
+-- Dumpning av Data i tabell `forfattare`
+--
+
+INSERT INTO `forfattare` (`ID`, `Namn`) VALUES
+(1, 'Morgan Augustsson'),
+(2, 'Stefan Folkesson'),
+(3, 'Jan Skansholm'),
+(4, 'Ben Elton'),
+(5, 'Eva Hartmann'),
+(6, 'Elisabet Wall'),
+(7, 'Dante Treglia');
 
 -- --------------------------------------------------------
 
@@ -203,7 +242,7 @@ ALTER TABLE `anvandare`
 -- AUTO_INCREMENT för tabell `bokfor`
 --
 ALTER TABLE `bokfor`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT för tabell `exemplar`
@@ -227,7 +266,7 @@ ALTER TABLE `filmreg`
 -- AUTO_INCREMENT för tabell `forfattare`
 --
 ALTER TABLE `forfattare`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT för tabell `lan`

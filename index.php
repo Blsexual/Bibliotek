@@ -8,13 +8,14 @@
       <link rel="stylesheet" href="index.css">
   </head>
   <body>
+
     <?php
         require_once('db.php');
         session_start();
     ?>
 
 
-    <div> <br> ----- Bok -----
+    <div id="Test"> <br> ----- Bok -----
         <?php
             if (isset($_POST['Bok'])) {
                 $sql = $conn->prepare("INSERT INTO bok (ISBN,Namn,LjudBok,ReferensBok) VALUES (?,?,?,?)");
@@ -42,18 +43,18 @@
             }
         ?>
         <?php
-            echo "<form method = 'post'>";
-                echo "<input type='hidden' name='Bok'>";
-                echo "Bok namn: <br><input type='text' name='BokNamn' required='require'><br>";
-                echo "Ljudbok: <br><input type='checkbox' name='Ljudbok'><br>";
-                echo "Referensbok: <br><input type='checkbox' name='ReferensBok'><br>";
-                echo "ISBN: <br><input type='text' name='ISBN' required='require'><br>";
-                echo "<input type='submit' value='Submit'>";
+            echo "<form method = 'post' class='Bok'>";
+                echo "<input type='hidden' name='Bok' class='Bok'>";
+                echo "Bok namn: <br><input type='text' name='BokNamn' required='require' class='Bok'><br>";
+                echo "Ljudbok: <br><input type='checkbox' name='Ljudbok' class='Bok'><br>";
+                echo "Referensbok: <br><input type='checkbox' name='ReferensBok' class='Bok'><br>";
+                echo "ISBN: <br><input type='text' name='ISBN' required='require' class='Bok'><br>";
+                echo "<input type='submit' value='Submit' class='Bok'>";
             echo "</form>";
         ?>
 
         <?php
-            echo "-----<br>";
+            echo " <br>";
             $sql = "SELECT Namn FROM bok";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
@@ -62,7 +63,7 @@
                 }
             }
         ?>
-    </div> ----- Bok -----
+     </div><br> <!-- ----- Bok ----- -->
 
     <div> <br> ----- Bok + Författare -----
         <?php
@@ -151,6 +152,7 @@
 
         <?php
             echo "------<br>";
+
             $sql = "SELECT bok.Namn AS BokNamn, forfattare.Namn AS ForNamn FROM bok,forfattare,bokfor WHERE bok.ISBN = bokfor.ISBN AND forfattare.ID = bokfor.FID";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
@@ -165,7 +167,7 @@
                 }
             }
         ?>
-    </div> ----- Bok + Författare -----
+    </div><br> <!-- ----- Bok + Författare ----- -->
 
 
     <div id="bruh"> <br> ----- Forfattare -----
@@ -182,14 +184,14 @@
             }
         ?>
         <?php
-            echo "<form method = 'post'>";
-                echo "<input type='hidden' name='Forfattare'>";
-                echo "<input type='text' name='ForfattarNamn' required='require'><br>";
-                echo "<input type='submit' value='Submit'>";
+            echo "<form method = 'post' class='Författare'>";
+                echo "<input type='hidden' name='Forfattare' class='Författare'>";
+                echo "<input type='text' name='ForfattarNamn' required='require' class='Författare'><br>";
+                echo "<input type='submit' value='Submit' class='Författare'>";
             echo "</form>";
         ?>
         <?php
-            echo "-----<br>";
+            echo "<br>";
             $sql = "SELECT Namn FROM forfattare";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
@@ -198,7 +200,6 @@
                 }
             }
         ?>
-    </div> ----- Forfattare -----
+    </div> <!-- ----- Forfattare ----- -->
   </body>
 </html>
-
