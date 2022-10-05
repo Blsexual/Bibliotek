@@ -43,7 +43,7 @@
             }
         ?>
         <?php
-            echo "<form method = 'post' class='Bok'>";
+            echo "<form method='post' class='Bok'>";
                 echo "<input type='hidden' name='Bok' class='Bok'>";
                 echo "Bok namn: <br><input type='text' name='BokNamn' required='require' class='Bok'><br>";
                 echo "Ljudbok: <br><input type='checkbox' name='Ljudbok' class='Bok'><br>";
@@ -55,11 +55,16 @@
 
         <?php
             echo " <br>";
-            $sql = "SELECT Namn FROM bok";
+            $sql = "SELECT Namn,ISBN FROM bok";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
-                    echo $row['Namn']."<br>";
+                    echo "<br>" . $row['Namn'];
+                    $ISBN = $row['ISBN'];
+                    echo "<form method='post' action='delete.php'>";
+                        echo "<input type='hidden' name='Bok' value='$ISBN'>";
+                        echo "<input type='submit' value='Delete'>";
+                    echo "</form>";
                 }
             }
         ?>
