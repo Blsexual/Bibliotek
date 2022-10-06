@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    require_once('db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,10 +12,25 @@
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-
         <?php
-            require_once('db.php');
-            session_start();
+            if (isset($_POST)){
+                $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
+                            echo "Inloggad som " . $row['Namn'];
+                            $Admin = 1;
+                            if ($row['Admin'] != 1){
+                                Header('Location:index.php');
+                            }
+                        }
+                    }
+                }
+            }
+            if($Admin != 1){
+                Header('Location:index.php');
+            }
         ?>
 
         <div id="adminbg">
