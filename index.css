@@ -2,33 +2,86 @@
     margin:0;
     padding:2;
     background-image: linear-gradient() /*url("bibliotek.jpg")*/;
-    background-color: burlywood;
+    background-color: transparent;
 }
 
-.bruh{
-    width:250px;
-    background-color:lightgray;
+#Bakgrund{
+    height:100vh;
+    width:100vw;
+    background-image: url("bibliotek.jpg");
 }
 
 .Text{
     background-color: aliceblue;
+    border-radius:5px;
 }
 
 .Bok{
     width:250px;
-    background-color: aquamarine;
+    background-color: #C34A36;
 }
 
-#Test{
+#Bok{
     width:250px;
-    background-color:aquamarine;
-}
-
-#Bakgrund{
-    background-image: url("bibliotek.jpg");
+    background-color:#C34A36;
+    margin-left:5px;
+    margin-top:4px;
+    border-radius: 5px;
+    position: absolute;
 }
 
 .Bokfor{
     width:250px;
-    background-color: aqua;
+    background-color: #C34A36;
+}
+
+#Bokfor{
+    width:250px;
+    background-color: #C34A36;
+    margin-left:300px;
+    margin-top:-13px;
+    border-radius: 5px;
+    position: absolute;
+}
+
+.Författare{
+    width:250px;
+    background-color:#C34A36;
+}
+
+#Författare{
+    width:250px;
+    background-color:#C34A36;
+    margin-left:595px;
+    margin-top:-32px;
+    border-radius: 5px;
+    position: absolute;
+}
+
+.Film{
+    width:250px;
+    background-color:#C34A36;
+}
+
+#Film{
+    width:250px;
+    background-color:#C34A36;
+    margin-left:890px;
+    margin-top:-32px;
+    border-radius: 5px;
+    position: absolute;
+}
+
+.Regissör{
+    width:250px;
+    background-color:#C34A36;
+}
+
+#Regissör{
+    width:250px;
+    background-color:#C34A36;
+    margin-left:1185px;
+    margin-top:-50px;
+    border-radius: 5px;
+    position: absolute;
 }

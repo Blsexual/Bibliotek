@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bibliotek</title>
+        <title>Bibliotek admin</title>
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
@@ -15,7 +15,7 @@
         ?>
 
         <div id="Bakgrund">
-            <div id="Test"> <br> ----- Bok -----
+            <div id="Bok"> <br> ----- Bok -----
                 <?php
                     if (isset($_POST['Bok'])) {
                         $sql = $conn->prepare("INSERT INTO bok (ISBN,Namn,LjudBok,ReferensBok) VALUES (?,?,?,?)");
@@ -63,14 +63,15 @@
                             $ISBN = $row['ISBN'];
                             echo "<form method='post' action='delete.php'>";
                                 echo "<input type='hidden' name='Bok' value='$ISBN'>";
-                                echo "<input type='submit' value='Delete'>";
+                                echo "<input type='submit' value='Delete' class='Text'>";
                             echo "</form>";
                         }
                     }
                 ?>
+                <br>
             </div><br> <!-- ----- Bok ----- -->
 
-            <div> <br> ----- Bok + Författare -----
+            <div id="Bokfor"> <br> ----- Bok + Författare -----
                 <?php
                     if (isset($_POST['BokFor'])){
                         $Bok = $_POST['BokFor'];
@@ -149,7 +150,7 @@
                                     } 
                                 } 
                             echo "</select><br>";
-                            echo "<input type='submit' value='Submit the form'/>";
+                            echo "<input type='submit' value='Submit the form' class='Text'/>";
                         echo "</form>";
                     } 
 
@@ -171,9 +172,10 @@
                         }
                     }
                 ?>
+                <br>
             </div><br> <!-- ----- Bok + Författare ----- -->
 
-            <div class="bruh"> <br> ----- Forfattare -----
+            <div id="Författare"> <br> ----- Författare -----
                 <?php
                     if (isset($_POST['Forfattare'])) {
                         $sql = $conn->prepare("INSERT INTO forfattare (Namn) VALUE (?)");
@@ -188,7 +190,7 @@
                     }
                 ?>
                 <?php
-                    echo "<form method = 'post' class='bruh'>";
+                    echo "<form method = 'post' class='Författare'>";
                         echo "<input type='hidden' name='Forfattare' class='Text'>";
                         echo "<input type='text' name='ForfattarNamn' required='require' class='Text'><br>";
                         echo "<input type='submit' value='Submit' class='Text'>";
@@ -204,9 +206,10 @@
                         }
                     }
                 ?>
-            </div> <!-- ----- Forfattare ----- -->
+                <br>
+            </div> <!-- ----- Författare ----- -->
 
-            <div id="Test"> <br> ----- Film -----
+            <div id="Film"> <br> ----- Film -----
                 <?php
                     if (isset($_POST['Film'])) {
                         $sql = $conn->prepare("INSERT INTO film (Titel,Langd) VALUES (?,?)");
@@ -224,9 +227,9 @@
                 <?php
                     echo "<form method = 'post' class='Film'>";
                         echo "<input type='hidden' name='Film' class='Film'>";
-                        echo "Film namn: <br><input type='text' name='FilmTitel' required='require' class='Film'><br>";
-                        echo "Längd: <br><input type='time' name='Langd' required='require' class='Film'><br>";
-                        echo "<input type='submit' value='Submit' class='Film'>";
+                        echo "Film namn: <br><input type='text' name='FilmTitel' required='require' class='Text'><br>";
+                        echo "Längd: <br><input type='time' name='Langd' required='require' class='Text'><br>";
+                        echo "<input type='submit' value='Submit' class='Text'>";
                     echo "</form>";
                 ?>
 
@@ -240,9 +243,10 @@
                         }
                     }
                 ?>
+                <br>
             </div><br> <!-- ----- Film ----- -->
 
-            <div id="bruh"> <br> ----- Regissör -----
+            <div id="Regissör"> <br> ----- Regissör -----
                 <?php
                     if (isset($_POST['Regissor'])) {
                         $sql = $conn->prepare("INSERT INTO regissor (Namn) VALUE (?)");
@@ -258,8 +262,8 @@
                 <?php
                     echo "<form method = 'post' class='Regissör'>";
                         echo "<input type='hidden' name='Regissor' class='Regissör'>";
-                        echo "<input type='text' name='RegissorNamn' required='require' class='Regissör'><br>";
-                        echo "<input type='submit' value='Submit' class='Regissör'>";
+                        echo "<input type='text' name='RegissorNamn' required='require' class='Text'><br>";
+                        echo "<input type='submit' value='Submit' class='Text'>";
                     echo "</form>";
                 ?>
                 <?php
@@ -272,6 +276,7 @@
                         }
                     }
                 ?>
+                <br>
             </div> <!-- ----- Regissör----- -->
 
         </div>
