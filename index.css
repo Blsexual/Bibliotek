@@ -3,6 +3,7 @@
     padding:2;
     background-image: linear-gradient() /*url("bibliotek.jpg")*/;
     background-color: transparent;
+    overflow-x: hidden;
 }
 
 #adminbg{
@@ -17,9 +18,22 @@
     background-image: url("bibliotek.jpg");
 }
 
+#Regbg{
+    height:100vh;
+    width:100vw;
+    background-image: url("bibliotek.jpg");
+}
+
 .Text{
     background-color: aliceblue;
     border-radius:5px;
+}
+
+#Reg{
+    background-color: aliceblue;
+    border-radius:5px;
+    width:76px;
+    margin-left:112px;
 }
 
 .Bok{
@@ -92,7 +106,20 @@
     position: absolute;
 }
 
-.loginbox{
+#loginbox{
+    padding:10px;
     width:300px;
-    background-color:crimson;
+    background-color:#C34A36;
+    margin:auto;
+    margin-top:40vh;
+    border-radius: 5px;
+}
+
+.RegText{
+    padding:10px;
+    width:300px;
+    background-color:#C34A36;
+    margin:auto;
+    margin-top:35vh;
+    border-radius: 5px;
 }
