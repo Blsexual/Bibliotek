@@ -5,7 +5,13 @@
     background-color: transparent;
 }
 
-#Bakgrund{
+#adminbg{
+    height:100vh;
+    width:100vw;
+    background-image: url("bibliotek.jpg");
+}
+
+#loginbg{
     height:100vh;
     width:100vw;
     background-image: url("bibliotek.jpg");
@@ -84,4 +90,9 @@
     margin-top:-50px;
     border-radius: 5px;
     position: absolute;
+}
+
+.loginbox{
+    width:300px;
+    background-color:crimson;
 }

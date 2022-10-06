@@ -14,7 +14,7 @@
             session_start();
         ?>
 
-        <div id="Bakgrund">
+        <div id="adminbg">
             <div id="Bok"> <br> ----- Bok -----
                 <?php
                     if (isset($_POST['Bok'])) {
