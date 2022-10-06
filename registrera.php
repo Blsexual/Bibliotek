@@ -3,7 +3,6 @@
     require_once('db.php');
     $_SESSION['PersonNum'] = NULL;
     $_SESSION['Pass'] = NULL;
-    print_r($_POST);
     $Fel = 1;
 ?>
 <!DOCTYPE html>
