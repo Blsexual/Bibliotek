@@ -41,7 +41,7 @@
                     $_SESSION['PassFel'] = 1;  
                     Header('Location:registrera.php');
                 }
-                if (($_SESSION['PerFel'] != 1) && ($_SESSION['PassFel'] != 1) && (@$_POST['Fel'] == 1)){
+                if ((@$_SESSION['PerFel'] != 1) && (@$_SESSION['PassFel'] != 1) && (@$_POST['Fel'] == 1)){
                     $sql = $conn->prepare("INSERT INTO anvandare (Namn,`Password`,Personnummer) VALUES (?,?,?)");
                     $sql->bind_param("sss", $Namn,$Pass,$Pers);
 
