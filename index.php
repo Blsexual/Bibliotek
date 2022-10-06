@@ -45,16 +45,17 @@
                     $_SESSION['Fel'] = 0;
                 }
             ?>
-
-            <form method='post' class="Loginbox">
-                <input type='hidden' name='Fel' value='1'>
-                Personnummner:<input type='text' name='PersonNum' required placeholder='YYYYMMDDXXXX' minlength='12' maxlength='12' class="Text"><br>
-                Lösenord:<input type='password' name='Pass' required class="Text"><br>
-                <input type='submit' value='Logga in' class="Text">
-            </form>
-            <form method = 'post' action='registrera.php'>
-                <input type='submit' value='Registrera dig!' class="Text">
-            </form>    
+            <div id="loginbox">
+                <form method='post'>
+                    <input type='hidden' name='Fel' value='1'>
+                    Personnummner:<input type='text' name='PersonNum' required placeholder='YYYYMMDDXXXX' minlength='12' maxlength='12' class="Text"><br>
+                    Lösenord:<input type='password' name='Pass' required class="Text"><br>
+                    <input type='submit' value='Logga in' class="Text">
+                </form>
+                <form method = 'post' action='registrera.php'>
+                    <input type='submit' value='Registrera dig!' class="Text">
+                </form> 
+            </div>    
         </div>
     </body>
 </html>
