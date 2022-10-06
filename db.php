@@ -1,14 +1,14 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db = "bibliotek";
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $db = "bibliotek";
 
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+  // Create connection
+  $conn = new mysqli($servername, $username, $password, $db);
+  // Check connection
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
 ?>

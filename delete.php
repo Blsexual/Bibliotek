@@ -9,6 +9,6 @@
         $sql = "DELETE FROM bok WHERE bok.ISBN = '$ISBN'";
         $conn->query($sql);
 
-        header('Location:index.php');
+        header('Location:admin.php');
     }
 ?>
