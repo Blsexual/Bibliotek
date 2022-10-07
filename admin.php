@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    require_once('db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,10 +12,25 @@
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-
         <?php
-            require_once('db.php');
-            session_start();
+            if (isset($_POST)){
+                $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
+                            echo "Inloggad som " . $row['Namn'];
+                            $Admin = 1;
+                            if ($row['Admin'] != 1){
+                                Header('Location:index.php');
+                            }
+                        }
+                    }
+                }
+            }
+            if($Admin != 1){
+                Header('Location:index.php');
+            }
         ?>
 
         <div id="adminbg">
@@ -93,8 +112,8 @@
                 ?>
                 <?php
                     echo "<form method='post' class='Bokfor'>";
-                        echo "Bok: <br><input type='text' list='Bok' name='ValdBok' required='require' autocomplete='off' class='Text'>";
-                            echo "<datalist id=Bok>";
+                        echo "Bok: <br><input type='text' list='bok' name='ValdBok' required autocomplete='off' class='Text'>";
+                            echo "<datalist id='bok'>";
                                 if (isset($_POST['ValdBok'])){
                                     $ValdBok = $_POST['ValdBok'];
                                     $sql = "SELECT Namn,ISBN FROM bok WHERE bok.ISBN != $ValdBok";
@@ -278,6 +297,76 @@
                 ?>
                 <br>
             </div> <!-- ----- Regissör----- -->
+
+            <div id="Bokfor2"> <br> ----- Låna -----
+                <?php
+                    echo "<form method='post'>";
+                        echo "Böcker: <input type='radio' name='ExemplarVal' value='1' required/>";
+                        echo "Filmer: <input type='radio' name='ExemplarVal' value='2' required/>";
+                        echo "<br><input type='submit' value='Sortera' class='Text'>";
+                    echo "</form>";
+
+                    $ExemplarVal = $_POST['ExemplarVal'];
+
+                    echo "<form method='post' class='Bokfor2'>";
+                        echo "<input type='hidden' value='$ExemplarVal' name='ExemplarVal'>";
+                        echo "<input type='hidden' value='1' name='ExemplarVal2'>";
+                        echo "Låna: <br><input type='text' list='exemplar' name='ValtExemplar' required autocomplete='off' class='Text'>";
+                            echo "<datalist id='exemplar'>";
+                                if($_POST['ExemplarVal'] == 1){
+                                    $sql = "SELECT Namn,ISBN FROM bok";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            $ISBN = $row['ISBN'];
+                                            $Namn = $row['Namn'];
+                                            echo "<option value='$ISBN' label='$Namn'></option>";
+                                        }
+                                    }
+                                }
+                                elseif ($_POST['ExemplarVal'] == 2){
+                                    $sql = "SELECT Titel,ID FROM film";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            $ID = $row['ID'];
+                                            $Titel = $row['Titel'];
+                                            echo "<option value='$ID' >$Titel</option>";
+                                        }
+                                    }
+                                }
+                            echo "</datalist>";
+                        echo "</input><br>";
+                        echo "<input type='submit' value='Välj bok' class='Text'/>";
+                    echo "</form>";
+                    if(($_POST['ExemplarVal'] == 1) && (@$_POST['ExemplarVal2'] == 1)){
+                        $ValtExemplar = $_POST['ValtExemplar'];
+                        $sql = "SELECT ID,bok.Namn AS Namn FROM `exemplar` INNER JOIN `bok` ON $ValtExemplar = bok.ISBN ORDER BY bok.Namn ASC";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo $row['ID']." ".$row['Namn']."<br>";
+                            }
+                        }
+                    }
+                    if(($_POST['ExemplarVal'] == 2) && (@$_POST['ExemplarVal2'] == 1)){
+                        $sql = "SELECT exemplar.ID AS ID,film.Titel AS Titel FROM `exemplar` INNER JOIN `film` ON exemplar.FID = film.ID ORDER BY film.ID ASC";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                if (@$BokNamn == $row['BokNamn']){
+                                }
+                                else{
+                                    echo "<br>". $row['BokNamn']."<br>";
+                                }
+                                $BokNamn = $row['BokNamn'];
+                                echo $row['ForNamn']."<br>";
+                            }
+                        }
+                    }
+                ?>
+                <br>
+            </div><br> <!-- ----- Låna ----- -->
 
         </div>
     </body>
