@@ -16,6 +16,9 @@
     </head>
     <body>
         <div id="loginbg">
+            <header id="loginhead">
+                Bibliotek
+            </header>
             <?php
                 if (isset($_POST['PersonNum'])){
                     $sql = "SELECT Namn,`Password`,Personnummer FROM anvandare";
@@ -48,7 +51,7 @@
             <div id="loginbox">
                 <form method='post'>
                     <input type='hidden' name='Fel' value='1'>
-                    Personnummner:<input type='text' name='PersonNum' required placeholder='YYYYMMDDXXXX' minlength='12' maxlength='12' class="Text"><br>
+                    Personnummner:<input type='text' name='PersonNum' required placeholder='YYYYMMDDXXXX' minlength='12' maxlength='12' autocomplete="off" class="Text"><br>
                     Lösenord:<input type='password' name='Pass' required class="Text"><br>
                     <input type='submit' value='Logga in' class="Text">
                 </form>
