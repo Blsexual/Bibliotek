@@ -9,7 +9,7 @@
 #adminbg{
     height:100vh;
     width:100vw;
-    background-image: url("bibliotek.jpg");
+    background-color:#FFB497;
 }
 
 #loginbg{
@@ -22,6 +22,12 @@
     height:100vh;
     width:100vw;
     background-image: url("bibliotek.jpg");
+}
+
+#anvbg{
+    height:100vh;
+    width:100vw;
+    background-color:#FFB497;
 }
 
 .Text{
@@ -111,7 +117,7 @@
     width:300px;
     background-color:#C34A36;
     margin:auto;
-    margin-top:40vh;
+    margin-top:30vh;
     border-radius: 5px;
 }
 
@@ -122,4 +128,44 @@
     margin:auto;
     margin-top:35vh;
     border-radius: 5px;
+}
+
+#loginhead{
+    font-size: 13vh;
+    background-color: #C34A36;
+    text-align: center;
+}
+
+#navigering{
+    position:absolute;
+    width:100vw;
+    background-color:#C34A36;
+    display: flex;
+    flex-direction: right;
+}
+
+#anvknapp{
+   
+    overflow:hidden;
+    font-size: 8vh;
+}
+
+#bokknapp{
+    overflow:hidden;
+    font-size: 8vh;
+}
+
+#forknapp{
+    overflow:hidden;
+    font-size: 8vh;
+}
+
+#filmknapp{
+    overflow:hidden;
+    font-size: 8vh;
+}
+
+#regknapp{
+    overflow:hidden;
+    font-size: 8vh;
 }

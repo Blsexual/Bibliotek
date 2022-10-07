@@ -62,8 +62,8 @@
             <div class="RegText">
                 <form method='post'>
                     <input type='hidden' name='Fel' value='1'>
-                    Namn:<input type='text' name='Namn' required class="Text"><br>
-                    Personnummner:<input type='text' name='PersonNum' required placeholder='YYYYMMDDXXXX' minlength='12' maxlength='12' class="Text"><br>
+                    Namn:<input type='text' name='Namn' required  autocomplete="off" class="Text"><br>
+                    Personnummner:<input type='text' name='PersonNum' required placeholder='YYYYMMDDXXXX' minlength='12' maxlength='12' autocomplete="off" class="Text"><br>
                     Lösenord:<input type='password' name='Pass1' required minlength='6' maxlength='30' class="Text"><br>
                     Verifiera lösenord:<input type='password' name='Pass2' required minlength='6' maxlength='30' class="Text"><br>
                     <input type='submit' value='Registrera' id="Reg">
