@@ -306,6 +306,9 @@
                         echo "<br><input type='submit' value='Sortera' class='Text'>";
                     echo "</form>";
 
+                    if (!isset($_POST['ExemplarVal'])){    
+                        $_POST['ExemplarVal'] = 1;
+                    }
                     $ExemplarVal = $_POST['ExemplarVal'];
 
                     echo "<form method='post' class='Bokfor2'>";
@@ -314,7 +317,7 @@
                         echo "Låna: <br><input type='text' list='exemplar' name='ValtExemplar' required autocomplete='off' class='Text'>";
                             echo "<datalist id='exemplar'>";
                                 if($_POST['ExemplarVal'] == 1){
-                                    $sql = "SELECT Namn,ISBN FROM bok";
+                                    $sql = "SELECT DISTINCT Namn,bok.ISBN FROM bok INNER JOIN exemplar ON bok.ISBN = exemplar.ISBN";
                                     $result = $conn->query($sql);
                                     if ($result->num_rows > 0) {
                                         while($row = $result->fetch_assoc()) {
@@ -341,26 +344,62 @@
                     echo "</form>";
                     if(($_POST['ExemplarVal'] == 1) && (@$_POST['ExemplarVal2'] == 1)){
                         $ValtExemplar = $_POST['ValtExemplar'];
-                        $sql = "SELECT ID,bok.Namn AS Namn FROM `exemplar` INNER JOIN `bok` ON $ValtExemplar = bok.ISBN ORDER BY bok.Namn ASC";
+                        $sql = "SELECT bok.Namn AS Namn,exemplar.ID FROM `exemplar` INNER JOIN `bok` ON $ValtExemplar = exemplar.ISBN AND $ValtExemplar = bok.ISBN ORDER BY `exemplar`.`ID` ASC;";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
                                 echo $row['ID']." ".$row['Namn']."<br>";
+                                $EID = $row['ID'];
+                                $sql2 = "SELECT lan.Inlamnad FROM `lan`,`exemplar` WHERE $EID = lan.EID ORDER BY lan.Inlamnad ASC;";
+                                $result2 = $conn->query($sql2);
+                                if ($result2->num_rows > 0) {
+                                    while($row2 = $result2->fetch_assoc()) {
+                                        if ($row2['Inlamnad'] != 1){
+                                                echo "<button>Utånad</button><br>";
+                                            break;
+                                        }
+                                        else{
+                                            echo "<form method='post'>";
+                                                echo "<input type='hidden' name='ExemplarVal' value='$ExemplarVal'>";
+                                                echo "<input type='hidden' name='ValtExemplar' value='$ValtExemplar'>";
+                                                echo "<input type='hidden' value='1' name='ExemplarVal2'>";
+                                                echo "<input type='submit' value='Låna'>";
+                                            echo "</form>";
+                                            break;
+                                        }
+                                    }
+                                }
+                                else {
+                                    echo "<form method='post'>";
+                                        echo "<input type='hidden' name='ExemplarVal' value='$ExemplarVal'>";
+                                        echo "<input type='hidden' name='ValtExemplar' value='$ValtExemplar'>";
+                                        echo "<input type='hidden' value='1' name='ExemplarVal2'>";
+                                        echo "<input type='submit' value='Låna'>";
+                                    echo "</form>";
+                                }
                             }
                         }
                     }
                     if(($_POST['ExemplarVal'] == 2) && (@$_POST['ExemplarVal2'] == 1)){
-                        $sql = "SELECT exemplar.ID AS ID,film.Titel AS Titel FROM `exemplar` INNER JOIN `film` ON exemplar.FID = film.ID ORDER BY film.ID ASC";
+                        $ValtExemplar = $_POST['ValtExemplar'];
+                        $sql = "SELECT film.Titel AS Titel,exemplar.ID FROM `exemplar` INNER JOIN `film` ON $ValtExemplar = exemplar.FID AND $ValtExemplar = film.ID ORDER BY `exemplar`.`ID` ASC;";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
-                                if (@$BokNamn == $row['BokNamn']){
+                                echo $row['ID']." ".$row['Titel']."<br>";
+                                echo "EEEEeee";
+                                $EID = $row['ID'];
+                                $sql = "SELECT Inlamnad FROM `lan` INNER JOIN `exemplar` ON $EID = lan.EID;";
+                                echo $sql;
+                                $result = $conn->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while($row = $result->fetch_assoc()) {
+                                        echo "EEEE";
+                                    }
                                 }
-                                else{
-                                    echo "<br>". $row['BokNamn']."<br>";
-                                }
-                                $BokNamn = $row['BokNamn'];
-                                echo $row['ForNamn']."<br>";
+                                echo "<form method='post'>";
+                                    echo "<input type='submit' value='Låna'>";
+                                echo "</form>";
                             }
                         }
                     }
@@ -371,3 +410,4 @@
         </div>
     </body>
 </html>
+
