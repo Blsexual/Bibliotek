@@ -33,16 +33,6 @@
                 </form>
             </div>
             <?php
-                if (isset($_POST)){
-                    $sql = "SELECT Namn,`Password`,Personnummer FROM anvandare";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
-                            if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
-                                echo "Inloggad som " . $row['Namn'];
-
-
-        <?php
             if (isset($_POST)){
                 $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
                 $result = $conn->query($sql);
@@ -56,6 +46,7 @@
                         }
                     }
                 }
+            }
             ?>
         </div>
     </body>

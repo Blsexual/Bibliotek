@@ -14,13 +14,14 @@
     <body>
         <?php
             if (isset($_POST)){
-                $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
+                $sql = "SELECT ID,Namn,`Password`,Personnummer,`Admin` FROM anvandare";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
                             echo "Inloggad som " . $row['Namn'];
                             $Admin = 1;
+                            $AnvID = $row['ID'];
                             if ($row['Admin'] != 1){
                                 Header('Location:index.php');
                             }
@@ -300,6 +301,23 @@
 
             <div id="Bokfor2"> <br> ----- Låna -----
                 <?php
+                    if (isset($_POST['GörLån'])){
+                        $Day = date('d');
+                        $Month = date('m');
+                        $Month2 = $Month + 1;
+                        $Year = date('Y');
+                        $Year2 = $Year;
+                        if ($Month2 == 13){
+                            $Year2 = $Year + 1;
+                            $Month2 = 1;
+                        }
+                        $StartD = $Year ."-". $Month ."-". $Day;
+                        $SlutD = $Year2 ."-". $Month2 ."-". $Day;
+                        $EID = $_POST['GörLån'];
+                        $sql = "INSERT INTO lan (AID,EID,StartD,SlutD) VALUES ($AnvID,$EID,'$StartD','$SlutD')";
+                        $result = $conn->query($sql);
+                        Header('Location:admin.php', false);
+                    }
                     echo "<form method='post'>";
                         echo "Böcker: <input type='radio' name='ExemplarVal' value='1' required/>";
                         echo "Filmer: <input type='radio' name='ExemplarVal' value='2' required/>";
@@ -363,6 +381,7 @@
                                                 echo "<input type='hidden' name='ExemplarVal' value='$ExemplarVal'>";
                                                 echo "<input type='hidden' name='ValtExemplar' value='$ValtExemplar'>";
                                                 echo "<input type='hidden' value='1' name='ExemplarVal2'>";
+                                                echo "<input type='hidden' value='$EID' name='GörLån'>";
                                                 echo "<input type='submit' value='Låna'>";
                                             echo "</form>";
                                             break;
@@ -374,6 +393,7 @@
                                         echo "<input type='hidden' name='ExemplarVal' value='$ExemplarVal'>";
                                         echo "<input type='hidden' name='ValtExemplar' value='$ValtExemplar'>";
                                         echo "<input type='hidden' value='1' name='ExemplarVal2'>";
+                                        echo "<input type='hidden' value='$EID' name='GörLån'>";
                                         echo "<input type='submit' value='Låna'>";
                                     echo "</form>";
                                 }
@@ -387,19 +407,36 @@
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
                                 echo $row['ID']." ".$row['Titel']."<br>";
-                                echo "EEEEeee";
                                 $EID = $row['ID'];
-                                $sql = "SELECT Inlamnad FROM `lan` INNER JOIN `exemplar` ON $EID = lan.EID;";
-                                echo $sql;
-                                $result = $conn->query($sql);
-                                if ($result->num_rows > 0) {
-                                    while($row = $result->fetch_assoc()) {
-                                        echo "EEEE";
+                                $sql2 = "SELECT lan.Inlamnad FROM `lan`,`exemplar` WHERE $EID = lan.EID ORDER BY lan.Inlamnad ASC;";
+                                $result2 = $conn->query($sql2);
+                                if ($result2->num_rows > 0) {
+                                    while($row2 = $result2->fetch_assoc()) {
+                                        if ($row2['Inlamnad'] != 1){
+                                                echo "<button>Utånad</button><br>";
+                                            break;
+                                        }
+                                        else{
+                                            echo "<form method='post'>";
+                                                echo "<input type='hidden' name='ExemplarVal' value='$ExemplarVal'>";
+                                                echo "<input type='hidden' name='ValtExemplar' value='$ValtExemplar'>";
+                                                echo "<input type='hidden' value='1' name='ExemplarVal2'>";
+                                                echo "<input type='hidden' value='$EID' name='GörLån'>";
+                                                echo "<input type='submit' value='Låna'>";
+                                            echo "</form>";
+                                            break;
+                                        }
                                     }
                                 }
-                                echo "<form method='post'>";
-                                    echo "<input type='submit' value='Låna'>";
-                                echo "</form>";
+                                else {
+                                    echo "<form method='post'>";
+                                        echo "<input type='hidden' name='ExemplarVal' value='$ExemplarVal'>";
+                                        echo "<input type='hidden' name='ValtExemplar' value='$ValtExemplar'>";
+                                        echo "<input type='hidden' value='1' name='ExemplarVal2'>";
+                                        echo "<input type='hidden' value='$EID' name='GörLån'>";
+                                        echo "<input type='submit' value='Låna'>";
+                                    echo "</form>";
+                                }
                             }
                         }
                     }
