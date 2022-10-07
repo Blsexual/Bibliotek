@@ -153,28 +153,16 @@
     flex-direction: right;
 }
 
-#anvknapp{
-   
+.knapp{
     overflow:hidden;
     font-size: 8vh;
+    height:13vh; 
+    width:100%;
 }
 
-#bokknapp{
-    overflow:hidden;
-    font-size: 8vh;
+#knapptryck{
+    background-color:#912a18;
 }
 
-#forknapp{
-    overflow:hidden;
-    font-size: 8vh;
-}
 
-#filmknapp{
-    overflow:hidden;
-    font-size: 8vh;
-}
 
-#regknapp{
-    overflow:hidden;
-    font-size: 8vh;
-}

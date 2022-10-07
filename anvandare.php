@@ -14,49 +14,49 @@
     </head>
     <body>
         <div id="anvbg">
-            <div id="navigering">
-                <!--<button id="anvknapp">Användare</button>-->
-                <form method='post'>
-                    <input type='submit' name='Tab' value='Användare' style="height:13vh; width:20vw;" id="anvknapp">
-                </form>
-                <form method='post'>
-                    <input type='submit' name='Tab' value='Bok' style="height:13vh; width:20vw;" id="bokknapp"/>
-                </form>
-                <form method='post'>
-                    <input type='submit' name='Tab' value='Författare' style="height:13vh; width:20vw;" id="forknapp">
-                </form>
-                <form method='post'>
-                    <input type='submit' name='Tab' value='Film' style="height:13vh; width:20vw;" id="filmknapp">
-                </form>
-                <form method='post'>
-                    <input type='submit' name='Tab' value='Regissör' style="height:13vh; width:20vw;" id="regknapp">
-                </form>
-            </div>
             <?php
+                if (@$_POST['Tab'] == "Logga ut"){
+                    Header('Location:index.php');
+                }
                 if (isset($_POST)){
-                    $sql = "SELECT Namn,`Password`,Personnummer FROM anvandare";
+                    $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
                             if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
                                 echo "Inloggad som " . $row['Namn'];
-
-
-        <?php
-            if (isset($_POST)){
-                $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
-                            echo "Inloggad som " . $row['Namn'];
-                            if ($row['Admin'] == 1){
-                                Header('Location:admin.php');
+                                if ($row['Admin'] == 1){
+                                    Header('Location:admin.php');
+                                }
                             }
                         }
                     }
                 }
+                if ((!isset($_SESSION['PersonNum'])) && (!isset($_SESSION['Password']))){
+                    Header('Location:index.php');
+                }
             ?>
+            <div id="navigering">
+                <!--<button id="anvknapp">Användare</button>-->
+                <form method='post'>
+                    <input type='submit' name='Tab' value='Användare' class="knapp" <?php if ($_POST['Tab'] == "Användare"){ echo "id='knapptryck' ";}?>>
+                </form>
+                <form method='post'>
+                    <input type='submit' name='Tab' value='Bok' class="knapp" <?php if ($_POST['Tab'] == "Bok"){ echo "id='knapptryck' ";}?>>
+                </form>
+                <form method='post'>
+                    <input type='submit' name='Tab' value='Författare' class="knapp" <?php if ($_POST['Tab'] == "Författare"){ echo "id='knapptryck' ";}?>>
+                </form>
+                <form method='post'>
+                    <input type='submit' name='Tab' value='Film' class="knapp" <?php if ($_POST['Tab'] == "Film"){ echo "id='knapptryck' ";}?>>
+                </form>
+                <form method='post'>
+                    <input type='submit' name='Tab' value='Regissör' class="knapp" <?php if ($_POST['Tab'] == "Regissör"){ echo "id='knapptryck' ";}?>>
+                </form>
+                <form method='post'>
+                    <input type='submit' name='Tab' value='Logga ut' class="knapp">
+                </form>
+            </div>
         </div>
     </body>
 </html>
