@@ -60,10 +60,73 @@
                     <input type='submit' name='Tab' value='Logga ut' class="knapp">
                 </form>
             </div>
+            <?php
+                if ($_POST['Tab'] == "Användare"){ // Användare
+                    echo "<div id='TabAnvändare' class='Tab'>";
+                        echo " <br>";
+                        $sql = "SELECT Namn FROM anvandare";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<br>" . $row['Namn'];
+                            }
+                        }
+                    echo "</div>";
+                }
 
-            <div id="TabAnvändare">
-                
-            </div>
+                if ($_POST['Tab'] == "Bok"){ // Bok
+                    echo "<div id='TabBok' class='Tab'>";
+                        echo " <br>";
+                        $sql = "SELECT Namn FROM bok";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<br>" . $row['Namn'];
+                            }
+                        }
+                    echo "</div>";
+                }
+
+                if ($_POST['Tab'] == "Författare"){ // Författare
+                    echo "<div id='TabFörfattare' class='Tab'>";
+                        $sql = "SELECT Namn FROM forfattare WHERE Namn LIKE ?";
+                        $stmt = $conn->prepare($sql); 
+                        $stmt->bind_param("s", $Namn);
+                        $Namn = "%".$Namn."%";
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<br>" . $row['Namn'];
+                        }
+                    echo "</div>";
+                }
+
+                if ($_POST['Tab'] == "Film"){ // Film
+                    echo "<div id='TabFilm' class='Tab'>";
+                        echo " <br>";
+                        $sql = "SELECT Titel FROM film";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<br>" . $row['Titel'];
+                            }
+                        }
+                    echo "</div>";
+                }
+
+                if ($_POST['Tab'] == "Regissör"){ // Regissör
+                    echo "<div id='TabRegissör' class='Tab'>";
+                        echo " <br>";
+                        $sql = "SELECT Namn FROM regissor";
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo "<br>" . $row['Namn'];
+                            }
+                        }
+                    echo "</div>";
+                }
+            ?>
         </div>
     </body>
 </html>

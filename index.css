@@ -164,5 +164,21 @@
     background-color:#912a18;
 }
 
+#TabAnvändare{
+    position: absolute;
+    top: 200px;
+    left: 400px;
+}
 
+#TabFörfattare{
+    position: absolute;
+    top: 200px;
+    left: 400px;
+}
+
+.Tab{
+    position: absolute;
+    top: 200px;
+    left: 400px;
+}
 
