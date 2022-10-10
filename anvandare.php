@@ -1,6 +1,8 @@
 <?php
     session_start();
     require_once('db.php');
+    $x = '"eeee"';
+    $Din = NULL;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,33 +38,33 @@
                 if ((!isset($_SESSION['PersonNum'])) && (!isset($_SESSION['Password']))){
                     Header('Location:index.php');
                 }
-                if (!isset($_POST['Tab'])){
-                    $_POST['Tab'] = "Användare";
+                if (isset($_POST['Tab'])){
+                    $_SESSION['Tab'] = $_POST['Tab'];
                 }
             ?>
             <div id="navigering">
                 <!--<button id="anvknapp">Användare</button>-->
                 <form method='post'>
-                    <input type='submit' name='Tab' value='Användare' class="knapp" <?php if ($_POST['Tab'] == "Användare"){ echo "id='knapptryck' ";}?>>
+                    <input type='submit' name='Tab' value='Användare' class="knapp" <?php if ($_SESSION['Tab'] == "Användare"){ echo "id='knapptryck' ";}?>>
                 </form>
                 <form method='post'>
-                    <input type='submit' name='Tab' value='Bok' class="knapp" <?php if ($_POST['Tab'] == "Bok"){ echo "id='knapptryck' ";}?>>
+                    <input type='submit' name='Tab' value='Bok' class="knapp" <?php if ($_SESSION['Tab'] == "Bok"){ echo "id='knapptryck' ";}?>>
                 </form>
                 <form method='post'>
-                    <input type='submit' name='Tab' value='Författare' class="knapp" <?php if ($_POST['Tab'] == "Författare"){ echo "id='knapptryck' ";}?>>
+                    <input type='submit' name='Tab' value='Författare' class="knapp" <?php if ($_SESSION['Tab'] == "Författare"){ echo "id='knapptryck' ";}?>>
                 </form>
                 <form method='post'>
-                    <input type='submit' name='Tab' value='Film' class="knapp" <?php if ($_POST['Tab'] == "Film"){ echo "id='knapptryck' ";}?>>
+                    <input type='submit' name='Tab' value='Film' class="knapp" <?php if ($_SESSION['Tab'] == "Film"){ echo "id='knapptryck' ";}?>>
                 </form>
                 <form method='post'>
-                    <input type='submit' name='Tab' value='Regissör' class="knapp" <?php if ($_POST['Tab'] == "Regissör"){ echo "id='knapptryck' ";}?>>
+                    <input type='submit' name='Tab' value='Regissör' class="knapp" <?php if ($_SESSION['Tab'] == "Regissör"){ echo "id='knapptryck' ";}?>>
                 </form>
                 <form method='post'>
-                    <input type='submit' name='Tab' value='Logga ut' class="knapp">
+                    <input type='submit' name='Tab' value='Logga ut' class="knapp" onclick='return confirm("Är du säker på att du vill logga ut?")'>
                 </form>
             </div>
             <?php
-                if ($_POST['Tab'] == "Användare"){ // Användare
+                if ($_SESSION['Tab'] == "Användare"){ // Användare
                     echo "<div id='TabAnvändare' class='Tab'>";
                         $sql = "SELECT DISTINCT lan.EID AS EID FROM lan INNER JOIN exemplar ON lan.AID = $AnvID AND Inlamnad = 0";
                         $result = $conn->query($sql);
@@ -85,18 +87,41 @@
                                 }
                             }
                         }
+                        else{
+                            echo "Du har inget lånat";
+                        }
                     echo "</div>";
                 }
-                if ($_POST['Tab'] == "Bok"){ // Bok
+                if ($_SESSION['Tab'] == "Bok"){ // Bok
+
+                    if (isset($_POST['GörLån'])){
+                        $Day = date('d');
+                        $Month = date('m');
+                        $Month2 = $Month + 1;
+                        $Year = date('Y');
+                        $Year2 = $Year;
+                        if ($Month2 == 13){
+                            $Year2 = $Year + 1;
+                            $Month2 = 1;
+                        }
+                        $StartD = $Year ."-". $Month ."-". $Day;
+                        $SlutD = $Year2 ."-". $Month2 ."-". $Day;
+                        $EID = $_POST['GörLån'];
+                        $sql = "INSERT INTO lan (AID,EID,StartD,SlutD) VALUES ($AnvID,$EID,'$StartD','$SlutD')";
+                        $result = $conn->query($sql);
+                    }
+
                     echo "<div id='TabBok' class='Tab'>";
                         echo "<form method='post'>";
                             echo "<input type='hidden' name='Tab', value='Bok'>";
                             echo "<input type='text' name='VisaBok'>";
                             echo "<input type='submit' value='Sök'>";
                         echo "</form>";
+
                         if (!isset($_POST['VisaBok'])){
                             $_POST['VisaBok'] = "";
                         }
+
                         if (isset($_POST['VisaBok'])){
                             $sql = "SELECT DISTINCT bok.Namn,bok.ISBN FROM bok INNER JOIN exemplar ON bok.Namn LIKE ? AND bok.ISBN = exemplar.ISBN";
                             $stmt = $conn->prepare($sql); 
@@ -123,17 +148,45 @@
                                         if ($result3->num_rows > 0) {
                                             while($row3 = $result3->fetch_assoc()) {
                                                 if ($row3['Inlamnad'] != 1){
-                                                    echo "<button>Utlånad</button><br>";
+                                                    $sql4 = "SELECT DISTINCT lan.EID AS EID FROM lan INNER JOIN exemplar ON lan.AID = $AnvID AND Inlamnad = 0";
+                                                    $result4 = $conn->query($sql4);
+                                                    if ($result4->num_rows > 0) {
+                                                        while($row4 = $result4->fetch_assoc()) {
+                                                            // echo $row4['EID'];
+                                                            if ($EID == $row4['EID']){
+                                                                $Test = 1;
+                                                            }
+                                                        }
+                                                    }
+                                                    else{
+                                                        $Test = 0;
+                                                    }
+                                                    if ($Test == 1){
+                                                        echo "<form method='post' action='lamnain.php'>";
+                                                            echo "<input type='hidden' name='EID', value='$EID'>";
+                                                            echo "<input type='submit' value='Lämna in'>";
+                                                        echo "</form>";
+                                                        echo "<br>";
+                                                    }
+                                                    else{
+                                                        echo "<br><button>Utlånad</button><br>";
+                                                    }
                                                     break;
                                                 }
                                                 else{
-                                                    echo "<button>Låna</button><br>";
+                                                    echo "<form method='post'>";
+                                                        echo "<input type='hidden' value='$EID' name='GörLån'>";
+                                                        echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                                    echo "</form>";
                                                     break;
                                                 }
                                             }
                                         }
                                         else{
-                                            echo "<button>Låna</button><br>";
+                                            echo "<form method='post'>";
+                                                echo "<input type='hidden' value='$EID' name='GörLån'>";
+                                                echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                            echo "</form>";
                                         }
                                     }
                                 }
@@ -142,12 +195,10 @@
                                 }
                             }
                         }
-
-
                     echo "</div>";
                 }
 
-                if ($_POST['Tab'] == "Författare"){ // Författare
+                if ($_SESSION['Tab'] == "Författare"){ // Författare
                     echo "<div id='TabFörfattare' class='Tab'>";
                         $sql = "SELECT Namn FROM forfattare WHERE Namn LIKE ?";
                         $stmt = $conn->prepare($sql); 
@@ -161,7 +212,7 @@
                     echo "</div>";
                 }
 
-                if ($_POST['Tab'] == "Film"){ // Film
+                if ($_SESSION['Tab'] == "Film"){ // Film
                     echo "<div id='TabFilm' class='Tab'>";
                         echo "<form method='post'>";
                             echo "<input type='hidden' name='Tab', value='Film'>";
@@ -219,7 +270,7 @@
                     echo "</div>";
                 }
 
-                if ($_POST['Tab'] == "Regissör"){ // Regissör
+                if ($_SESSION['Tab'] == "Regissör"){ // Regissör
                     echo "<div id='TabRegissör' class='Tab'>";
                         echo " <br>";
                         $sql = "SELECT Namn FROM regissor";

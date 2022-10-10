@@ -10,7 +10,7 @@
         while($row = $result->fetch_assoc()) {
             $ID = $row['ID'];
             echo $row['ID'];
-            $sql = "UPDATE lan SET Inlamnad = 1 WHERE ID = $ID";
+            $sql = "UPDATE lan SET Inlamnad = 1 WHERE ID = $ID AND Inlamnad != 1";
             $result = $conn->query($sql);
             Header("Location:anvandare.php");
         }
