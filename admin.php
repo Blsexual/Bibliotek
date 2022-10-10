@@ -83,7 +83,9 @@
                             $ISBN = $row['ISBN'];
                             echo "<form method='post' action='delete.php'>";
                                 echo "<input type='hidden' name='Bok' value='$ISBN'>";
-                                echo "<input type='submit' value='Delete' class='Text'>";
+                                ?>
+                                <input type='submit' value='Delete' class='Text' onclick='return confirm("Are you sure?")'>
+                                <?php
                             echo "</form>";
                         }
                     }
@@ -316,7 +318,7 @@
                         $EID = $_POST['GörLån'];
                         $sql = "INSERT INTO lan (AID,EID,StartD,SlutD) VALUES ($AnvID,$EID,'$StartD','$SlutD')";
                         $result = $conn->query($sql);
-                        Header('Location:admin.php', false);
+                        // Header('Location:admin.php',true);
                     }
                     echo "<form method='post'>";
                         echo "Böcker: <input type='radio' name='ExemplarVal' value='1' required/>";

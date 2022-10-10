@@ -1,1 +1,0 @@
-document.getElementById("anvknapp").style.background='#000000';
