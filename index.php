@@ -3,6 +3,7 @@
     require_once('db.php');
     $_SESSION['PersonNum'] = NULL;
     $_SESSION['Pass'] = NULL;
+    $_SESSION['Tab'] = NULL;
     $Fel = 1;
 ?>
 <!DOCTYPE html>
