@@ -32,6 +32,9 @@
             if($Admin != 1){
                 Header('Location:index.php');
             }
+            if (@$_POST['Tab'] == "Logga ut"){
+                Header('Location:index.php');
+            }
         ?>
 
         <div id="adminbg">
@@ -445,7 +448,11 @@
                 ?>
                 <br>
             </div><br> <!-- ----- Låna ----- -->
-
+            <div>
+                <form method='post'>
+                    <input type='submit' name='Tab' value='Logga ut' class="knapp">
+                </form>
+            </div>
         </div>
     </body>
 </html>
