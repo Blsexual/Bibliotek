@@ -19,7 +19,7 @@
                     Header('Location:index.php');
                 }
                 if (isset($_POST)){
-                    $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
+                    $sql = "SELECT Namn,`Password`,Personnummer,`Admin`,ID FROM anvandare";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
@@ -34,6 +34,9 @@
                 }
                 if ((!isset($_SESSION['PersonNum'])) && (!isset($_SESSION['Password']))){
                     Header('Location:index.php');
+                }
+                if (!isset($_POST['Tab'])){
+                    $_POST['Tab'] = "Användare";
                 }
             ?>
             <div id="navigering">
@@ -57,22 +60,10 @@
                     <input type='submit' name='Tab' value='Logga ut' class="knapp">
                 </form>
             </div>
-            <?php
-            if (isset($_POST)){
-                $sql = "SELECT Namn,`Password`,Personnummer,`Admin` FROM anvandare";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
-                            echo "Inloggad som " . $row['Namn'];
-                            if ($row['Admin'] == 1){
-                                Header('Location:admin.php');
-                            }
-                        }
-                    }
-                }
-            }
-            ?>
+
+            <div id="TabAnvändare">
+                
+            </div>
         </div>
     </body>
 </html>
