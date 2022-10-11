@@ -14,8 +14,8 @@
         <link rel="stylesheet" href="index.css">
         <script src="index.js"></script>
     </head>
-    <body>
-        <div id="anvbg">
+    <body id="anvbg">
+        <div >
             <?php
                 if (@$_POST['Tab'] == "Logga ut"){
                     Header('Location:index.php');
@@ -43,7 +43,6 @@
                 }
             ?>
             <div id="navigering">
-                <!--<button id="anvknapp">Användare</button>-->
                 <form method='post'>
                     <input type='submit' name='Tab' value='Användare' class="knapp" <?php if ($_SESSION['Tab'] == "Användare"){ echo "id='knapptryck' ";}?>>
                 </form>
@@ -63,6 +62,7 @@
                     <input type='submit' name='Tab' value='Logga ut' class="knapp" onclick='return confirm("Är du säker på att du vill logga ut?")'>
                 </form>
             </div>
+            
             <?php
                 if ($_SESSION['Tab'] == "Användare"){ // Användare
                     echo "<div id='TabAnvändare' class='Tab'>";
@@ -116,8 +116,8 @@
                         echo "<div id='TabBok' class='Tab'>";
                             echo "<form method='post'>";
                                 echo "<input type='hidden' name='Tab', value='Bok'>";
-                                echo "<input type='text' name='VisaBok'>";
-                                echo "<input type='submit' value='Sök'>";
+                                echo "<input type='text' name='VisaBok' class='Text'>";
+                                echo "<input type='submit' value='Sök' class='Text'>";
                             echo "</form>";
 
                             if (!isset($_POST['VisaBok'])){
@@ -159,7 +159,7 @@
                                                                 if ($EID == $row4['EID']){
                                                                     echo "<form method='post' action='lamnain.php'>";
                                                                         echo "<input type='hidden' name='EID', value='$EID'>";
-                                                                        echo "<input type='submit' value='Lämna in'>";
+                                                                        echo "<input type='submit' value='Lämna in' class='Text'>";
                                                                     echo "</form>";
                                                                     $Din = 1;
                                                                     break;
@@ -169,13 +169,13 @@
                                                         if ($Din == 1){
                                                             break;
                                                         }
-                                                        echo "<br><button>Utlånad</button><br>";
+                                                        echo "<br><button class='Text'>Utlånad</button><br>";
                                                         break;
                                                     }
                                                     else{
                                                         echo "<form method='post'>";
                                                             echo "<input type='hidden' value='$EID' name='GörLån'>";
-                                                            echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                                            echo "<input type='submit' value='Låna' onclick='return confirm($x)' class='Text'>";
                                                         echo "</form>";
                                                         break;
                                                     }
@@ -184,7 +184,7 @@
                                             else{
                                                 echo "<form method='post'>";
                                                     echo "<input type='hidden' value='$EID' name='GörLån'>";
-                                                    echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                                    echo "<input type='submit' value='Låna' onclick='return confirm($x)' class='Text'>";
                                                 echo "</form>";
                                             }
                                         }
@@ -297,8 +297,8 @@
                     echo "<div id='TabFilm' class='Tab'>";
                         echo "<form method='post'>";
                             echo "<input type='hidden' name='Tab', value='Film'>";
-                            echo "<input type='text' name='VisaFilm'>";
-                            echo "<input type='submit' value='Sök'>";
+                            echo "<input type='text' name='VisaFilm' class='Text'>";
+                            echo "<input type='submit' value='Sök' class='Text'>";
                         echo "</form>";
                         if (!isset($_POST['VisaFilm'])){
                             $_POST['VisaFilm'] = "";
@@ -329,17 +329,17 @@
                                         if ($result3->num_rows > 0) {
                                             while($row3 = $result3->fetch_assoc()) {
                                                 if ($row3['Inlamnad'] != 1){
-                                                    echo "<button>Utlånad</button><br>";
+                                                    echo "<button class='Text'>Utlånad</button><br>";
                                                     break;
                                                 }
                                                 else{
-                                                    echo "<button>Låna</button><br>";
+                                                    echo "<button class='Text'>Låna</button><br>";
                                                     break;
                                                 }
                                             }
                                         }
                                         else{
-                                            echo "<button>Låna</button><br>";
+                                            echo "<button class='Text'>Låna</button><br>";
                                         }
                                     }
                                 }
@@ -353,12 +353,12 @@
 
                 if ($_SESSION['Tab'] == "Regissör"){ // Regissör
                     echo "<div id='TabRegissör' class='Tab'>";
-                        echo " <br>";
+                        echo " ";
                         $sql = "SELECT Namn FROM regissor";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
-                                echo "<br>" . $row['Namn'];
+                                echo "<br> " . $row['Namn'];
                             }
                         }
                     echo "</div>";
