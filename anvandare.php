@@ -4,6 +4,8 @@
     $x = '"Är du säker på att du vill låna den?"';
     $Din = NULL;
     $NamnTest = NULL;
+    $EID = NULL;
+    $Ingen = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,13 +90,16 @@
                     $sql = "SELECT DISTINCT lan.EID AS EID FROM lan INNER JOIN exemplar ON lan.AID = $AnvID AND Inlamnad = 0";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
+                        echo "Dina lånade böcker <br>";
+                        echo "------------------ <br>";
                         while($row = $result->fetch_assoc()) {
                             $EID = $row['EID'];
-                            echo $row['EID'] . " ";
                             $sql2 = "SELECT bok.Namn FROM bok INNER JOIN exemplar ON bok.ISBN = exemplar.ISBN AND exemplar.ID = $EID";
                             $result2 = $conn->query($sql2);
                             if ($result2->num_rows > 0) {
                                 while($row2 = $result2->fetch_assoc()) {
+                                    $Ingen = 1;
+                                    echo $row['EID'] . " ";
                                     echo $row2['Namn'];
                                     echo "<form method='post' action='lamnain.php'>";
                                         echo "<input type='hidden' name='EID', value='$EID'>";
@@ -104,8 +109,41 @@
                                 }
                             }
                         }
+                        
                     }
-                    else{
+                    if ($Ingen == 0 && $EID != NULL){
+                        echo "Du har inga böcker lånade<br><br>";
+                    }
+
+                    $Ingen = 0;
+
+                    $sql = "SELECT DISTINCT lan.EID AS EID FROM lan INNER JOIN exemplar ON lan.AID = $AnvID AND Inlamnad = 0";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        echo "Dina lånade filmer <br>";
+                        echo "------------------ <br>";
+                        while($row = $result->fetch_assoc()) {
+                            $EID = $row['EID'];
+                            $sql2 = "SELECT film.Titel FROM film INNER JOIN exemplar ON film.ID = exemplar.FID AND exemplar.ID = $EID";
+                            $result2 = $conn->query($sql2);
+                            if ($result2->num_rows > 0) {
+                                while($row2 = $result2->fetch_assoc()) {
+                                    $Ingen = 1;
+                                    echo $row['EID'] . " ";
+                                    echo $row2['Titel'];
+                                    echo "<form method='post' action='lamnain.php'>";
+                                        echo "<input type='hidden' name='EID', value='$EID'>";
+                                        echo "<input type='submit' value='Lämna in'>";
+                                    echo "</form>";
+                                    echo "<br>";
+                                }
+                            }
+                        }
+                    }
+                    if ($Ingen == 0 && $EID != NULL){
+                        echo "Du har inga filmer lånade<br><br>";
+                    }
+                    if($EID == NULL){
                         echo "Du har inget lånat";
                     }
                 echo "</div>";
