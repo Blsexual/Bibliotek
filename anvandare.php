@@ -199,15 +199,96 @@
                 echo "</div>";
 
                 if ($_SESSION['Tab'] == "Författare"){ // Författare
+
                     echo "<div id='TabFörfattare' class='Tab'>";
-                        $sql = "SELECT Namn FROM forfattare WHERE Namn LIKE ?";
-                        $stmt = $conn->prepare($sql); 
-                        $stmt->bind_param("s", $Namn);
-                        $Namn = "%".$Namn."%";
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<br>" . $row['Namn'];
+                        echo "<form method='post'>";
+                            echo "<input type='hidden' name='Tab', value='Författare'>";
+                            echo "<input type='text' name='VisaFörf'>";
+                            echo "<input type='submit' value='Sök'>";
+                        echo "</form>";
+                         
+                        
+                        if (!isset($_POST['VisaFörf'])){
+                            $_POST['VisaFörf'] = "";
+                        }
+
+                        if (isset($_POST['VisaFörf'])){
+                            $sql = "SELECT Namn,ID FROM forfattare WHERE Namn LIKE ?";
+                            $stmt = $conn->prepare($sql); 
+                            $stmt->bind_param("s", $Namn);
+                            $Namn = $_POST['VisaFörf'];
+                            $Namn = "%".$Namn."%";
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $FID = $row['ID'];
+                                    $sql2 = "SELECT bok.Namn,bok.ISBN FROM bok INNER JOIN bokfor ON bokfor.FID = $FID AND bok.ISBN = bokfor.ISBN";
+                                    $result2 = $conn->query($sql2);
+                                    if ($result2->num_rows > 0) {
+                                        while($row2 = $result2->fetch_assoc()) {
+                                            $Num = 0;
+                                            $ISBN = $row2['ISBN'];
+                                            $sql3 = "SELECT bok.Namn AS Namn,exemplar.ID FROM `exemplar` INNER JOIN `bok` ON $ISBN = exemplar.ISBN AND $ISBN = bok.ISBN ORDER BY `exemplar`.`ID` ASC";
+                                            $result3 = $conn->query($sql3);
+                                            if ($result3->num_rows > 0) {
+                                                echo "<br>" .$row['ID'] . $row['Namn']  . "<br> ----------- <br>";
+                                                while($row3 = $result3->fetch_assoc()) {
+                                                    $Num += 1;
+                                                    echo $Num . " " . $row3['Namn'];
+                                                    $EID = $row3['ID'];
+                                                    echo "<br>";
+                                                    $sql4 = "SELECT lan.Inlamnad FROM `lan`,`exemplar` WHERE $EID = lan.EID ORDER BY lan.Inlamnad ASC;";
+                                                    $result4 = $conn->query($sql4);
+                                                    if ($result4->num_rows > 0) {
+                                                        while($row4 = $result4->fetch_assoc()) {
+                                                            $Din = 0;
+                                                            if ($row4['Inlamnad'] != 1){
+                                                                $sql5 = "SELECT DISTINCT lan.EID AS EID FROM lan INNER JOIN exemplar ON lan.AID = $AnvID AND Inlamnad = 0";
+                                                                $result5 = $conn->query($sql5);
+                                                                if ($result5->num_rows > 0) {
+                                                                    while($row5 = $result5->fetch_assoc()) {
+                                                                        // echo $row4['EID'];
+                                                                        if ($EID == $row5['EID']){
+                                                                            echo "<form method='post' action='lamnain.php'>";
+                                                                                echo "<input type='hidden' name='EID', value='$EID'>";
+                                                                                echo "<input type='submit' value='Lämna in'>";
+                                                                            echo "</form>";
+                                                                            $Din = 1;
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if ($Din == 1){
+                                                                    break;
+                                                                }
+                                                                echo "  <button>Utlånad</button><br>";
+                                                                break;
+                                                            }
+                                                            else{
+                                                                echo "<form method='post'>";
+                                                                    echo "<input type='hidden' value='$EID' name='GörLån'>";
+                                                                    echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                                                echo "</form>";
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    else{
+                                                        echo "<form method='post'>";
+                                                            echo "<input type='hidden' value='$EID' name='GörLån'>";
+                                                            echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                                        echo "</form>";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else{
+                                echo "Inget";
+                            }
                         }
                     echo "</div>";
                 }
