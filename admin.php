@@ -276,6 +276,110 @@
                 <br>
             </div><br> <!-- ----- Film ----- -->
 
+            <div id="FilmReg"> <br> ----- Film + Regissör -----
+                <?php
+                    if (isset($_POST['FilmReg'])){
+                        $Film = $_POST['FilmReg'];
+                        echo $Film . "<br>";
+                        $values = $_POST['Reg'];
+                        foreach ($values as $a){
+                            echo $a . "<br>";
+
+                            $sql = "INSERT INTO bokfor (ISBN, FID) VALUES ('$Film', '$a')";
+
+                            if ($conn->query($sql) === TRUE) {
+                            } 
+                            else {
+                            echo "Error: " . $sql . "<br>" . $conn->error;
+                            }
+                            Header('Location:admin.php');
+                        }
+                    }
+                ?>
+                <?php
+                    echo "<form method='post' class='FilmReg'>";
+                        echo "Film: <br><input type='text' list='film' name='ValdFilm' required autocomplete='off' class='Text'>";
+                            echo "<datalist id='bok'>";
+                                if (isset($_POST['ValdFilm'])){
+                                    $ValdBok = $_POST['ValdFilm'];
+                                    $sql = "SELECT Namn,ID FROM film WHERE film.ID != $ValdFilm";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            $ID = $row['ID'];
+                                            $Namn = $row['Namn'];
+                                            echo "<option value='$ID' >$Namn</option>";
+                                        }
+                                    }
+                                    $sql = "SELECT Namn,ID FROM film WHERE film.ID = $ValdFilm";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            $ID = $row['ID'];
+                                            $NamnVal = $row['Namn'];
+                                            echo "<option value='$ID'>$NamnVal</option>";
+                                        }
+                                    }
+                                }
+                                else{
+                                    $sql = "SELECT Namn,ID FROM film";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while($row = $result->fetch_assoc()) {
+                                            $ID = $row['ID'];
+                                            $Namn = $row['Namn'];
+                                            echo "<option value='$ID'>$Namn</option>";
+                                        }
+                                    }
+                                } 
+                            echo "</datalist>";
+                        echo "</input><br>";
+                        echo "<input type='submit' value='Välj film' class='Text'/>";
+                    echo "</form>";
+
+                    if (isset($_POST['ValdFilm'])){
+                        $ValdFilm = $_POST['ValdFilm'];
+                        echo $NamnVal;
+                        echo "<form method='post'>";
+                            echo "<input type='hidden' name='FilmReg' value='$ValdFilm'>";
+                            echo "Regissör: <br><select name='Reg[]' id='test' multiple='multiple' required='require'>";
+                                $sql = "SELECT regissor.Namn,regissor.ID,filmreg.FID FROM forfattare LEFT JOIN bokfor ON forfattare.ID = bokfor.FID AND bokfor.ISBN = $ValdBok";
+                                $result = $conn->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while($row = $result->fetch_assoc()) {
+                                        $ID = $row['ID'];
+                                        $Namn = $row['Namn'];
+                                        if ($row['ISBN'] == NULL){
+                                            echo "<option value='$ID'>$Namn</option>";
+                                        }
+                                    } 
+                                } 
+                            echo "</select><br>";
+                            echo "<input type='submit' value='Submit the form' class='Text'/>";
+                        echo "</form>";
+                    } 
+
+                ?>
+                <?php
+                    echo " <br>";
+
+                    $sql = "SELECT bok.Namn AS BokNamn, forfattare.Namn AS ForNamn FROM bok,forfattare,bokfor WHERE bok.ISBN = bokfor.ISBN AND forfattare.ID = bokfor.FID";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                            if (@$BokNamn == $row['BokNamn']){
+                            }
+                            else{
+                                echo "<br>". $row['BokNamn']."<br>";
+                            }
+                            $BokNamn = $row['BokNamn'];
+                            echo $row['ForNamn']."<br>";
+                        }
+                    }
+                ?>
+                <br>
+            </div><br> <!-- ----- Bok + Författare ----- -->
+
             <div id="Regissör"> <br> ----- Regissör -----
                 <?php
                     if (isset($_POST['Regissor'])) {
