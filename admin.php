@@ -1,7 +1,7 @@
-<?php
-    session_start();
-    require_once('db.php');
-?>
+    <?php
+        session_start();
+        require_once('db.php');
+    ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
