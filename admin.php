@@ -101,7 +101,7 @@
                 <br>
             </div><br> <!-- ----- Bok ----- -->
 
-            <div id="Bokfor"> <br> ----- Bok + Författare -----
+            <div id="BokFor"> <br> ----- Bok + Författare -----
                 <?php
                     if (isset($_POST['BokFor'])){
                         $Bok = $_POST['BokFor'];
@@ -122,7 +122,7 @@
                     }
                 ?>
                 <?php
-                    echo "<form method='post' class='Bokfor'>";
+                    echo "<form method='post' class='BokFor'>";
                         echo "Bok: <br><input type='text' list='bok' name='ValdBok' required autocomplete='off' class='Text'>";
                             echo "<datalist id='bok'>";
                                 if (isset($_POST['ValdBok'])){
@@ -301,34 +301,34 @@
                         echo "Film: <br><input type='text' list='film' name='ValdFilm' required autocomplete='off' class='Text'>";
                             echo "<datalist id='bok'>";
                                 if (isset($_POST['ValdFilm'])){
-                                    $ValdBok = $_POST['ValdFilm'];
-                                    $sql = "SELECT Namn,ID FROM film WHERE film.ID != $ValdFilm";
+                                    $ValdFilm = $_POST['ValdFilm'];
+                                    $sql = "SELECT Titel,ID FROM film WHERE film.ID != $ValdFilm";
                                     $result = $conn->query($sql);
                                     if ($result->num_rows > 0) {
                                         while($row = $result->fetch_assoc()) {
                                             $ID = $row['ID'];
-                                            $Namn = $row['Namn'];
-                                            echo "<option value='$ID' >$Namn</option>";
+                                            $Titel = $row['Titel'];
+                                            echo "<option value='$ID' >$Titel</option>";
                                         }
                                     }
-                                    $sql = "SELECT Namn,ID FROM film WHERE film.ID = $ValdFilm";
+                                    $sql = "SELECT Titel,ID FROM film WHERE film.ID = $ValdFilm";
                                     $result = $conn->query($sql);
                                     if ($result->num_rows > 0) {
                                         while($row = $result->fetch_assoc()) {
                                             $ID = $row['ID'];
-                                            $NamnVal = $row['Namn'];
+                                            $NamnVal = $row['Titel'];
                                             echo "<option value='$ID'>$NamnVal</option>";
                                         }
                                     }
                                 }
                                 else{
-                                    $sql = "SELECT Namn,ID FROM film";
+                                    $sql = "SELECT Titel,ID FROM film";
                                     $result = $conn->query($sql);
                                     if ($result->num_rows > 0) {
                                         while($row = $result->fetch_assoc()) {
                                             $ID = $row['ID'];
-                                            $Namn = $row['Namn'];
-                                            echo "<option value='$ID'>$Namn</option>";
+                                            $Titel = $row['Titel'];
+                                            echo "<option value='$ID'>$Titel</option>";
                                         }
                                     }
                                 } 
@@ -343,13 +343,13 @@
                         echo "<form method='post'>";
                             echo "<input type='hidden' name='FilmReg' value='$ValdFilm'>";
                             echo "Regissör: <br><select name='Reg[]' id='test' multiple='multiple' required='require'>";
-                                $sql = "SELECT regissor.Namn,regissor.ID,filmreg.FID FROM forfattare LEFT JOIN bokfor ON forfattare.ID = bokfor.FID AND bokfor.ISBN = $ValdBok";
+                                $sql = "SELECT regissor.Namn,regissor.ID,filmreg.FID FROM regissor LEFT JOIN filmreg ON regissor.ID = filmreg.RID AND film.FID = $ValdBok";
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     while($row = $result->fetch_assoc()) {
-                                        $ID = $row['ID'];
+                                        $ID = $row['FID'];
                                         $Namn = $row['Namn'];
-                                        if ($row['ISBN'] == NULL){
+                                        if ($row['ID'] == NULL){
                                             echo "<option value='$ID'>$Namn</option>";
                                         }
                                     } 
@@ -363,22 +363,22 @@
                 <?php
                     echo " <br>";
 
-                    $sql = "SELECT bok.Namn AS BokNamn, forfattare.Namn AS ForNamn FROM bok,forfattare,bokfor WHERE bok.ISBN = bokfor.ISBN AND forfattare.ID = bokfor.FID";
+                    $sql = "SELECT film.Titel AS FilmNamn, regissor.Namn AS RegNamn FROM film,regissor,filmreg WHERE film.ID = filmreg.FID AND regissor.ID = filmreg.RID";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
-                            if (@$BokNamn == $row['BokNamn']){
+                            if (@$FilmNamn == $row['FilmNamn']){
                             }
                             else{
-                                echo "<br>". $row['BokNamn']."<br>";
+                                echo "<br>". $row['FilmNamn']."<br>";
                             }
-                            $BokNamn = $row['BokNamn'];
-                            echo $row['ForNamn']."<br>";
+                            $FilmNamn = $row['FilmNamn'];
+                            echo $row['RegNamn']."<br>";
                         }
                     }
                 ?>
                 <br>
-            </div><br> <!-- ----- Bok + Författare ----- -->
+            </div><br> <!-- ----- Film + Regissör ----- -->
 
             <div id="Regissör"> <br> ----- Regissör -----
                 <?php
