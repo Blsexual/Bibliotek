@@ -69,6 +69,7 @@
                         $sql = "SELECT DISTINCT lan.EID AS EID FROM lan INNER JOIN exemplar ON lan.AID = $AnvID AND Inlamnad = 0";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
+                            echo "Dina lånade böcker: <br><br>";
                             while($row = $result->fetch_assoc()) {
                                 $EID = $row['EID'];
                                 echo $row['EID'] . " ";
@@ -79,7 +80,7 @@
                                         echo $row2['Namn'];
                                         echo "<form method='post' action='lamnain.php'>";
                                             echo "<input type='hidden' name='EID', value='$EID'>";
-                                            echo "<input type='submit' value='Lämna in'>";
+                                            echo "<input type='submit' value='Lämna in' class='Text'>";
                                         echo "</form>";
                                         echo "<br>";
 
@@ -203,8 +204,8 @@
                     echo "<div id='TabFörfattare' class='Tab'>";
                         echo "<form method='post'>";
                             echo "<input type='hidden' name='Tab', value='Författare'>";
-                            echo "<input type='text' name='VisaFörf'>";
-                            echo "<input type='submit' value='Sök'>";
+                            echo "<input type='text' name='VisaFörf' class='Text'>";
+                            echo "<input type='submit' value='Sök' class='Text'>";
                         echo "</form>";
                          
                         
@@ -252,7 +253,7 @@
                                                                         if ($EID == $row5['EID']){
                                                                             echo "<form method='post' action='lamnain.php'>";
                                                                                 echo "<input type='hidden' name='EID', value='$EID'>";
-                                                                                echo "<input type='submit' value='Lämna in'>";
+                                                                                echo "<input type='submit' value='Lämna in' class='Text'>";
                                                                             echo "</form>";
                                                                             $Din = 1;
                                                                             break;
@@ -262,13 +263,13 @@
                                                                 if ($Din == 1){
                                                                     break;
                                                                 }
-                                                                echo "  <button>Utlånad</button><br>";
+                                                                echo "  <button class='Text'>Utlånad</button><br>";
                                                                 break;
                                                             }
                                                             else{
                                                                 echo "<form method='post'>";
                                                                     echo "<input type='hidden' value='$EID' name='GörLån'>";
-                                                                    echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                                                    echo "<input type='submit' value='Låna' onclick='return confirm($x)' class='Text'>";
                                                                 echo "</form>";
                                                                 break;
                                                             }
@@ -277,7 +278,7 @@
                                                     else{
                                                         echo "<form method='post'>";
                                                             echo "<input type='hidden' value='$EID' name='GörLån'>";
-                                                            echo "<input type='submit' value='Låna' onclick='return confirm($x)'>";
+                                                            echo "<input type='submit' value='Låna' onclick='return confirm($x)' class='Text'>";
                                                         echo "</form>";
                                                     }
                                                 }
