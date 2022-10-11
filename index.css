@@ -7,9 +7,9 @@
 
 #adminbg{
     height: auto;
-    min-height: 100vh;
     width:100vw;
     background-color:#FFB497;
+    background-repeat: repeat;
 }
 
 #loginbg{
@@ -168,15 +168,53 @@
 }
 
 #TabAnvändare{
+    background-color: #C34A36;
+    border-radius: 5px;
+    padding:10px;
     position: absolute;
     top: 200px;
     left: 400px;
+    box-shadow: 5px 5px 15px;
 }
 
 #TabFörfattare{
+    background-color: #C34A36;
+    border-radius: 5px;
+    padding:10px;
     position: absolute;
     top: 200px;
     left: 400px;
+    box-shadow: 5px 5px 15px;
+}
+
+#TabBok{
+    background-color: #C34A36;
+    border-radius: 5px;
+    padding:10px;
+    position: absolute;
+    top: 200px;
+    left: 400px;
+    box-shadow: 5px 5px 15px;
+}
+
+#TabFilm{
+    background-color: #C34A36;
+    border-radius: 5px;
+    padding:10px;
+    position: absolute;
+    top: 200px;
+    left: 400px;
+    box-shadow: 5px 5px 15px;
+}
+
+#TabRegissör{
+    background-color: #C34A36;
+    border-radius: 5px;
+    padding:10px;
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    box-shadow: 5px 5px 15px;
 }
 
 .Tab{
