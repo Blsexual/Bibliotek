@@ -101,7 +101,6 @@
                                         echo "<input type='submit' value='Lämna in'>";
                                     echo "</form>";
                                     echo "<br>";
-
                                 }
                             }
                         }
