@@ -1,31 +1,34 @@
 *{
     margin:0;
     padding:2;
-    background-image: linear-gradient() /*url("bibliotek.jpg")*/;
     background-color: transparent;
     overflow-x: hidden;
 }
 
 #adminbg{
-    height:100vh;
+    height: auto;
+    min-height: 100vh;
     width:100vw;
     background-color:#FFB497;
 }
 
 #loginbg{
-    height:100vh;
+    height:auto;
+    min-height: 100vh;
     width:100vw;
     background-image: url("bibliotek.jpg");
 }
 
 #Regbg{
-    height:100vh;
+    height: auto;
+    min-height: 100vh;
     width:100vw;
     background-image: url("bibliotek.jpg");
 }
 
 #anvbg{
-    height:100vh;
+    height: auto;
+    min-height: 100vh;
     width:100vw;
     background-color:#FFB497;
 }
@@ -182,3 +185,19 @@
     left: 400px;
 }
 
+.meny{
+    margin-top: 1%;
+}
+
+#logut{
+    font-size: 5vh;
+    height:7vh;
+    width:11%;
+    margin-left: 89%;
+    
+}
+
+.loggaut{
+    font-size: 30px;
+    margin-left:5px;
+}
