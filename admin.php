@@ -1,7 +1,7 @@
-    <?php
-        session_start();
-        require_once('db.php');
-    ?>
+<?php
+    session_start();
+    require_once('db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -299,7 +299,7 @@
                 <?php
                     echo "<form method='post' class='FilmReg'>";
                         echo "Film: <br><input type='text' list='film' name='ValdFilm' required autocomplete='off' class='Text'>";
-                            echo "<datalist id='bok'>";
+                            echo "<datalist id='film'>";
                                 if (isset($_POST['ValdFilm'])){
                                     $ValdFilm = $_POST['ValdFilm'];
                                     $sql = "SELECT Titel,ID FROM film WHERE film.ID != $ValdFilm";
@@ -413,7 +413,7 @@
                 <br>
             </div> <!-- ----- Regissör----- -->
 
-            <div id="Bokfor2"> <br> ----- Låna -----
+            <div id="Lana"> <br> ----- Låna -----
                 <?php
                     if (isset($_POST['GörLån'])){
                         $Day = date('d');
@@ -557,6 +557,89 @@
                 ?>
                 <br>
             </div><br> <!-- ----- Låna ----- -->
+
+            <div id="Exemplar"> <br> ---- Exemplar ----
+                <?php
+                    echo "<form method='post'>";
+                        echo "<input type='hidden' name='Tab', value='Bok'>";
+                        echo "<input type='text' name='VisaBok' class='Text'>";
+                        echo "<input type='submit' value='Sök' class='Text'>";
+                    echo "</form>";
+
+                    if (!isset($_POST['VisaBok'])){
+                        $_POST['VisaBok'] = "";
+                    }
+
+                    if (isset($_POST['VisaBok'])){
+                        $sql = "SELECT DISTINCT bok.Namn,bok.ISBN FROM bok INNER JOIN exemplar ON bok.Namn LIKE ? AND bok.ISBN = exemplar.ISBN";
+                        $stmt = $conn->prepare($sql); 
+                        $stmt->bind_param("s", $Namn);
+                        $Namn = $_POST['VisaBok'];
+                        $Namn = "%".$Namn."%";
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while ($row = $result->fetch_assoc()) {
+                            $Num = 0;
+                            $ISBN = $row['ISBN'];
+                            echo "<br>" . $row['Namn'];
+                            echo "<form method='post' action='exemplar.php'>";
+                                echo "<input type='hidden' name='ISBN', value='$ISBN'>";
+                                echo "<input type='submit' value='Lägg till nytt exemplar' class='Text'>";
+                            echo "</form>";
+                            echo " ----------- <br>";
+
+                            $sql2 = "SELECT bok.Namn AS Namn,exemplar.ID FROM `exemplar` INNER JOIN `bok` ON $ISBN = exemplar.ISBN AND $ISBN = bok.ISBN ORDER BY `exemplar`.`ID` ASC";
+                            $result2 = $conn->query($sql2);
+                            if ($result2->num_rows > 0) {
+                                while($row2 = $result2->fetch_assoc()) {
+                                    $Num += 1;
+                                    echo $Num . " " . $row2['Namn'];
+                                    $EID = $row2['ID'];
+
+                                    $sql3 = "SELECT lan.Inlamnad FROM `lan`,`exemplar` WHERE $EID = lan.EID ORDER BY lan.Inlamnad ASC;";
+                                    $result3 = $conn->query($sql3);
+                                    if ($result3->num_rows > 0) {
+                                        while($row3 = $result3->fetch_assoc()) {
+                                            $Din = 0;
+                                            if ($row3['Inlamnad'] != 1){
+                                                $sql4 = "SELECT DISTINCT lan.EID AS EID FROM lan INNER JOIN exemplar ON lan.AID = $AnvID AND Inlamnad = 0";
+                                                $result4 = $conn->query($sql4);
+                                                if ($result4->num_rows > 0) {
+                                                    while($row4 = $result4->fetch_assoc()) {
+                                                        // echo $row4['EID'];
+                                                        if ($EID == $row4['EID']){
+                                                            echo "<br>";
+                                                            $Din = 1;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if ($Din == 1){
+                                                    echo "<br>";
+                                                    break;
+                                                }
+                                                echo "<br>";
+                                                break;
+                                            }
+                                            else{
+                                                echo "<br>";
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        echo "<br>";
+                                    }
+                                }
+                            }
+                            else{
+                                echo "Inga exemplar <br>";
+                            }
+                        }
+                    }
+        
+                ?>
+            </div><br> <!-- Exemplar -->
         </div>
     </body>
 </html>

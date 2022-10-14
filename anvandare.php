@@ -31,9 +31,9 @@
                         if ((@$_SESSION['PersonNum'] == $row['Personnummer']) && (@$_SESSION['Pass'] == $row['Password'])){
                             echo "Inloggad som " . $row['Namn'];
                             $AnvID = $row['ID'];
-                            // if ($row['Admin'] == 1){
-                            //     Header('Location:admin.php');
-                            // }
+                            if ($row['Admin'] == 1){
+                                Header('Location:admin.php');
+                            }
                         }
                     }
                 }
@@ -103,7 +103,7 @@
                                     echo $row2['Namn'];
                                     echo "<form method='post' action='lamnain.php'>";
                                         echo "<input type='hidden' name='EID', value='$EID'>";
-                                        echo "<input type='submit' value='Lämna in'>";
+                                        echo "<input type='submit' value='Lämna in' class='Text'>";
                                     echo "</form>";
                                     echo "<br>";
                                 }
@@ -133,7 +133,7 @@
                                     echo $row2['Titel'];
                                     echo "<form method='post' action='lamnain.php'>";
                                         echo "<input type='hidden' name='EID', value='$EID'>";
-                                        echo "<input type='submit' value='Lämna in'>";
+                                        echo "<input type='submit' value='Lämna in' class='Text'>";
                                     echo "</form>";
                                     echo "<br>";
                                 }
@@ -449,7 +449,10 @@
                                         $sql3 = "SELECT film.Titel,exemplar.ID FROM `exemplar` INNER JOIN `film` ON $FID = exemplar.FID AND $FID = film.ID ORDER BY `exemplar`.`ID` ASC";
                                         $result3 = $conn->query($sql3);
                                         if ($result3->num_rows > 0) {
-                                            echo "<br>" .$row['ID'] . $row['Namn']  . "<br> ----------- <br>";
+                                            if ($NamnTest != $row['Namn']){
+                                                echo "<br>" . $row['Namn']  . "<br> ----------- <br>";
+                                            }
+                                            $NamnTest = $row['Namn'];
                                             while($row3 = $result3->fetch_assoc()) {
                                                 $Num += 1;
                                                 echo $Num . " " . $row3['Titel'];
